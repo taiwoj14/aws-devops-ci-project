@@ -1,0 +1,37 @@
+
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      python: 3.12
+    commands:
+      - echo "Installing test dependencies..."
+      - python -m pip install --upgrade pip
+      - python -m pip install pytest
+
+  pre_build:
+    commands:
+      - echo "Checking Python version..."
+      - python --version
+
+  build:
+    commands:
+      - echo "Running automated tests..."
+      - python -m pytest -v
+
+  post_build:
+    commands:
+      - echo "Build and tests completed successfully."
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
+  exclude-paths:
+    - '.git/**/*'
+    - '.venv/**/*'
+    - '.pytest_cache/**/*'
+    - '**/__pycache__/**/*'
+    - '**/*.pyc'
+
