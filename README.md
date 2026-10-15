@@ -127,6 +127,21 @@ The build process includes:
 3. Executing the automated tests.
 4. Reporting the build result.
 
+## Build Environment Variables
+
+No custom environment variables are configured in the AWS CodeBuild project.
+
+The build uses the following configuration:
+
+- **Runtime:** Python 3.12, specified in `buildspec.yml`.
+- **Dependency:** `pytest`, installed during the build.
+- **Test command:** `python -m pytest -v`.
+- **Environment variables:** No custom environment variables are currently defined.
+
+The build relies on the standard environment provided by AWS CodeBuild and the configuration defined in `buildspec.yml`. AWS CodeBuild also provides built-in environment variables during builds.
+
+No AWS credentials or secret values are stored in the project repository.
+
 ## CI Pipeline Automation
 
 The AWS CodePipeline project is named `aws-devops-ci-pipeline`.
