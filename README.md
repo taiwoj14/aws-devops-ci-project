@@ -222,6 +222,40 @@ Potential improvements include:
 - Adding deployment automation with AWS CodeDeploy.
 - Reviewing and further restricting IAM permissions where appropriate.
 
+## Screenshots and Evidence
+
+The following screenshots document the AWS DevOps CI pipeline implementation and verification.
+
+### 1. CodePipeline Execution
+
+Shows the CodePipeline execution with successful Source and Build stages.
+
+![CodePipeline successful execution](screenshots/codepipeline-success.png)
+
+### 2. Source Artifacts in Amazon S3
+
+Shows the source artifacts stored in the pipeline's S3 artifact bucket.
+
+![S3 source artifacts](screenshots/s3-source-artifacts.png)
+
+### 3. Build Artifacts in Amazon S3
+
+Shows the build-stage artifacts stored in the S3 artifact bucket.
+
+![S3 build artifacts](screenshots/s3-build-artifacts.png)
+
+### 4. Source Artifact Contents
+
+Shows the files packaged in the downloaded source artifact, including the application code, tests, `buildspec.yml`, and README.
+
+![Source artifact contents](screenshots/source-artifact-contents.png)
+
+### 5. Build Artifact Contents
+
+Shows the files packaged in the downloaded build artifact.
+
+![Build artifact contents](screenshots/build-artifact-contents.png)
+
 ## Author
 
 **Taiwo Joseph**
