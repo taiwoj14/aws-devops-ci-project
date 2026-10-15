@@ -22,3 +22,6 @@ def test_divide():
 def test_divide_by_zero():
     with pytest.raises(ValueError):
         divide(10, 0)
+        
+def test_add_negative_numbers():
+    assert add(-2, -3) == -5
