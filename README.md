@@ -1,33 +1,215 @@
-
 # AWS DevOps CI Pipeline Project
 
-## Overview
+## Project Overview
 
-This project demonstrates a continuous integration pipeline using AWS CodeCommit, AWS CodeBuild, and AWS CodePipeline.
+This project demonstrates how to build an automated Continuous Integration (CI) pipeline on AWS using AWS CodeCommit, AWS CodeBuild, and AWS CodePipeline.
 
-## Application
+The project uses a Python calculator application with automated unit tests. Whenever code changes are pushed to the CodeCommit repository, CodePipeline automatically detects the change and triggers CodeBuild to run the tests.
 
-A simple Python calculator with automated unit tests.
+The goal is to demonstrate source control, automated testing, pipeline orchestration, and AWS IAM security practices.
 
-## Technologies
+## Project Objectives
 
-- AWS CodeCommit — source control
-- AWS CodeBuild — build and test automation
-- AWS CodePipeline — pipeline orchestration
+- Store application source code in AWS CodeCommit.
+- Configure AWS CodeBuild to install dependencies and execute automated tests.
+- Use a `buildspec.yml` file to define the build process.
+- Automate the CI workflow using AWS CodePipeline.
+- Trigger pipeline executions automatically when changes are pushed.
+- Apply IAM permissions to support the pipeline.
+- Document successful builds and verification results.
+
+## Architecture
+
+The CI workflow follows this sequence:
+
+1. **AWS CodeCommit:** Stores the application source code, tests, and build specification.
+2. **AWS CodePipeline:** Detects repository changes and coordinates the pipeline.
+3. **AWS CodeBuild:** Installs pytest and runs the automated tests.
+4. **Amazon S3:** Stores pipeline artifacts.
+5. **Amazon CloudWatch Logs:** Stores build logs for troubleshooting.
+
+```text
+Developer
+    |
+    | Git commit and push
+    v
+AWS CodeCommit
+    |
+    | Automatic change detection
+    v
+AWS CodePipeline
+    |
+    | Source artifact
+    v
+AWS CodeBuild
+    |
+    | Install dependencies
+    | Run pytest
+    v
+Build Result
+    |
+    +---- Success: All tests pass
+    |
+    +---- Failure: Build logs help identify the problem
+```
+
+## Technologies Used
+
+- AWS CodeCommit
+- AWS CodeBuild
+- AWS CodePipeline
+- Amazon S3
+- Amazon CloudWatch Logs
+- AWS Identity and Access Management (IAM)
 - Python 3.12
-- pytest — automated testing
+- pytest
+- Git
+- Visual Studio Code
+- Ubuntu on WSL2
 
-## Build Process
+## Project Structure
 
-1. Code is pushed to the CodeCommit repository.
-2. CodePipeline detects the source change.
-3. CodeBuild installs pytest and runs the unit tests.
-4. If the tests pass, CodeBuild produces a ZIP artifact.
+```text
+aws-devops-ci-project/
+├── app/
+│   ├── __init__.py
+│   └── calculator.py
+├── tests/
+│   ├── __init__.py
+│   └── test_calculator.py
+├── buildspec.yml
+├── .gitignore
+└── README.md
+```
 
-## IAM Roles
+## Application Description
 
-The CodeBuild and CodePipeline service roles will be documented after they are configured.
+The Python calculator application provides the following operations:
 
-## Verification Evidence
+- Addition
+- Subtraction
+- Multiplication
+- Division
+- Division-by-zero error handling
 
-Screenshots of the successful pipeline and build artifact will be added after deployment.
+The application demonstrates how automated tests can be incorporated into a CI pipeline.
+
+## Automated Testing
+
+The project uses pytest to test the calculator functions.
+
+The tests cover:
+
+- Addition
+- Addition with negative numbers
+- Subtraction
+- Multiplication
+- Division
+- Division by zero
+
+Run the tests locally from the project directory:
+
+```bash
+source .venv/bin/activate
+python -m pytest -v
+```
+
+**Latest verification:** All six tests passed locally, and the AWS CodePipeline execution succeeded after the latest test change.
+
+## Build Specification
+
+The `buildspec.yml` file defines the commands AWS CodeBuild executes during the build.
+
+The build process includes:
+
+1. Selecting the Python 3.12 runtime.
+2. Installing pytest.
+3. Executing the automated tests.
+4. Reporting the build result.
+
+## CI Pipeline Automation
+
+The AWS CodePipeline project is named `aws-devops-ci-pipeline`.
+
+The pipeline contains the following stages:
+
+- **Source stage:** Retrieves source code from AWS CodeCommit.
+- **Build stage:** Invokes AWS CodeBuild to run the automated tests.
+
+The CodeBuild project is named `aws-devops-ci-build`.
+
+The pipeline has been tested by pushing a code change to the `main` branch. The change triggered a new pipeline execution automatically, and the execution completed successfully.
+
+## AWS Resource Configuration
+
+| Resource | Name |
+|---|---|
+| AWS Region | `us-east-1` |
+| CodeCommit repository | `aws-devops-ci-project` |
+| Source branch | `main` |
+| CodeBuild project | `aws-devops-ci-build` |
+| CodePipeline | `aws-devops-ci-pipeline` |
+| CodeBuild service role | `codebuild-aws-devops-ci-build-service-role` |
+| CodeBuild permissions policy | `CodeBuildBasePolicy-aws-devops-ci-build-us-east-1` |
+| Pipeline artifact bucket | `codepipeline-us-east-1-670879805533` |
+| CloudWatch Logs group | `/aws/codebuild/aws-devops-ci-build` |
+
+## IAM and Security
+
+The project uses an AWS CodeBuild service role to allow CodeBuild to execute the CI build.
+
+- **CodeBuild service role:** `codebuild-aws-devops-ci-build-service-role`
+- **Attached permissions policy:** `CodeBuildBasePolicy-aws-devops-ci-build-us-east-1`
+- **Trusted service:** `codebuild.amazonaws.com`
+- **AWS Region:** `us-east-1`
+- **CodeCommit repository:** `aws-devops-ci-project`
+- **CodePipeline artifact bucket:** `codepipeline-us-east-1-670879805533`
+
+The permissions policy covers CloudWatch Logs, S3 artifact access, pulling source code from the designated CodeCommit repository, and CodeBuild test-report operations.
+
+The role's trust policy allows AWS CodeBuild to assume the role. The pipeline has been verified as successful.
+
+**Security note:** Review IAM permissions periodically and restrict access to the resources and actions required by the project. Do not commit AWS credentials, access keys, or other secrets to the repository.
+
+## Verification Results
+
+The following checks have been completed:
+
+- [x] CodeCommit repository created.
+- [x] Python calculator application created.
+- [x] Automated unit tests passed locally.
+- [x] CodeBuild project created and tested successfully.
+- [x] CodePipeline created and executed successfully.
+- [x] Automatic pipeline triggering verified after a Git push.
+- [x] Six automated tests passed in the latest verification.
+- [x] CodeBuild IAM trust relationship inspected.
+- [x] Pipeline execution status verified as `Succeeded`.
+
+## Lessons Learned
+
+This project provided hands-on experience with:
+
+- Creating and managing a source-code repository in AWS.
+- Configuring CodeBuild using `buildspec.yml`.
+- Automating continuous integration with CodePipeline.
+- Triggering pipeline executions after source-code changes.
+- Troubleshooting automated test execution.
+- Understanding IAM service roles, trust policies, and permissions.
+- Applying security best practices to AWS DevOps workflows.
+
+## Future Improvements
+
+Potential improvements include:
+
+- Adding a dedicated testing stage.
+- Adding code coverage reporting.
+- Introducing static code analysis and security scanning.
+- Adding deployment automation with AWS CodeDeploy.
+- Reviewing and further restricting IAM permissions where appropriate.
+
+## Author
+
+**Taiwo Joseph**
+
+GitHub: [https://github.com/taiwoj14]
+
