@@ -274,6 +274,12 @@ Shows the files packaged in the downloaded build artifact.
 
 ![Build artifact contents](screenshots/build-artifact-contents.png)
 
+### 6. CodeCommit Repository
+
+Shows the AWS CodeCommit repository used as the source for the CI pipeline.
+
+![CodeCommit repository](screenshots/codecommit-repository.png)
+
 ## AWS CLI Verification
 
 The AWS CLI was verified using the `aws sts get-caller-identity` command.
