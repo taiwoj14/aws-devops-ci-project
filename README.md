@@ -146,14 +146,32 @@ No AWS credentials or secret values are stored in the project repository.
 
 The AWS CodePipeline project is named `aws-devops-ci-pipeline`.
 
-The pipeline contains the following stages:
+The pipeline contains the following three stages:
 
-- **Source stage:** Retrieves source code from AWS CodeCommit.
-- **Build stage:** Invokes AWS CodeBuild to run the automated tests.
+- **Source stage:** Retrieves source code from the AWS CodeCommit repository `aws-devops-ci-project`, branch `main`.
+- **Build stage:** Invokes AWS CodeBuild to install pytest and run the automated tests.
+- **Deploy stage:** Deploys the build artifact to the `production/` prefix in the Amazon S3 deployment bucket `taiwo-aws-devops-ci-deploy-2026`.
 
 The CodeBuild project is named `aws-devops-ci-build`.
 
-The pipeline has been tested by pushing a code change to the `main` branch. The change triggered a new pipeline execution automatically, and the execution completed successfully.
+### Automatic Change Detection
+
+Amazon EventBridge monitors changes to the CodeCommit repository and the `main` branch. When a new commit is pushed, the EventBridge rule starts the CodePipeline automatically.
+
+- **EventBridge rule:** `codepipeline-awsdev-main-114714-rule`
+- **Rule status:** Enabled
+- **Event source:** AWS CodeCommit
+- **Target pipeline:** `aws-devops-ci-pipeline`
+
+### Automatic Trigger Verification
+
+Automatic pipeline triggering was tested by committing and pushing the CodeCommit repository screenshot to the `main` branch.
+
+- **Test commit:** `1da4a9236e6c5bb697495badc1e6d42d3c03912f`
+- **Pipeline execution ID:** `98f33d84-269d-4d4f-a24e-60435b09882e`
+- **Execution result:** Succeeded
+
+The pipeline execution used the same commit that was pushed to CodeCommit. This verified that the configured EventBridge rule triggered the pipeline automatically without a manual pipeline release.
 
 ## AWS Resource Configuration
 
