@@ -256,6 +256,13 @@ Shows the files packaged in the downloaded build artifact.
 
 ![Build artifact contents](screenshots/build-artifact-contents.png)
 
+## AWS CLI Verification
+
+The AWS CLI was verified using the `aws sts get-caller-identity` command.
+The command successfully returned the configured IAM identity.
+
+![AWS CLI identity verification](screenshots/aws-cli-identity.png)
+
 ## Author
 
 **Taiwo Joseph**
