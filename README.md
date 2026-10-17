@@ -187,6 +187,41 @@ The pipeline execution used the same commit that was pushed to CodeCommit. This 
 | Pipeline artifact bucket | `codepipeline-us-east-1-670879805533` |
 | CloudWatch Logs group | `/aws/codebuild/aws-devops-ci-build` |
 
+## AWS Resource Tagging Strategy
+
+To improve resource identification, organization, cost management, and maintenance, this project follows a consistent AWS resource tagging strategy.
+
+### Standard Tags
+
+| Tag Key | Example Value | Purpose |
+|---|---|---|
+| Project | CalculatorCI | Identifies resources associated with this CI project. |
+| Environment | Dev | Identifies the development environment. |
+| ManagedBy | Manual | Identifies how the resource is currently managed. |
+| Owner | TaiwoJoseph | Identifies the project owner or responsible contact. |
+
+### Tagging Guidelines
+
+- Apply the standard tags to supported AWS resources created for this project.
+- Use consistent tag keys and values across related resources.
+- Use `Environment=Dev` for development resources. Update the value when resources belong to another environment.
+- Use `Project=CalculatorCI` to help identify resources belonging to this project.
+- Review resource tags periodically to keep them accurate.
+- Use AWS cost allocation tags where supported to help categorize costs in AWS billing reports.
+- Do not include passwords, access keys, personal secrets, or other sensitive information in tags.
+
+### Resources to Consider for Tagging
+
+Where supported, apply these tags to project-related resources such as:
+
+- AWS CodeBuild project
+- AWS CodePipeline pipeline
+- Amazon S3 artifact and deployment buckets
+- Amazon CloudWatch log groups
+- Related IAM roles and other supported AWS resources
+
+**Important:** This section documents the intended tagging strategy. It does not mean that these tags have already been applied to the AWS resources. Actual resource tags must be checked and applied separately.
+
 ## IAM and Security
 
 The project uses an AWS CodeBuild service role to allow CodeBuild to execute the CI build.
